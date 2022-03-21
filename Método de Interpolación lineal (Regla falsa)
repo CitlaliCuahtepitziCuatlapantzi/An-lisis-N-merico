@@ -1,0 +1,93 @@
+//CCC                     Analisis numerico                          16/03/2022
+//Codigo para resolver ecuaciones polinomiales mediante el metodo de Regla Falsa
+
+#include <stdio.h>//biblioteca default
+#include <math.h>//biblioteca de funciones matematicas
+
+int main(){
+    //declaracion de variables
+    float xLOW, xUP, yxUP, yxLOW, PRODUCTOxLOWYxUP, xROOT, yxROOT, errorrelativo, xROOTBEFORE;
+    float  PRODUCTOYxLOWYxROOT, PRODUCTOYxROOTYxUP;
+    int i;//Contador de ejecuciones
+    i=0;//Contador de ejecuciones, valor default
+    errorrelativo=100;//valor default del error relativo
+    
+    //Bienvenida al usuario 
+    printf("\nANALISIS NUMERICO                                    CCC                                               16/03/2022\n");
+    printf("\n=================================================================================================================\n");
+    printf("                 PROGRAMA PARA EL CALCULO DE RAICES DE POLINOMIOS MEDIANTE METODO DE REGLA FALSA");
+    printf("\n=================================================================================================================\n");
+    printf("Este programa calcula las raices de la funcion: y = 4x^4 - 2x^3 + x^2 - x - 9 con una tolerancia de 0.1 por ciento \n");
+    printf("Indique los valores del intervalo donde se sospecha una raiz, en orden de MENOR a MAYOR:\n\n");
+    
+    //se recibe el dato inferior del intervalo
+    printf("\n xLOW=");
+    scanf("%f", &xLOW);
+    //se recibe el dato superior del intervalo 
+    printf("\n xUP=");
+    scanf("%f", &xUP);
+    printf("\n\n");
+    
+    //calculo de imagenes y producto
+    yxLOW= 4*pow(xLOW,4) - 2*pow(xLOW,3) + pow(xLOW,2) - xLOW - 9;
+    yxUP= 4*pow(xUP,4) - 2*pow(xUP,3) + pow(xUP,2) - xUP - 9;
+    PRODUCTOxLOWYxUP = yxLOW*yxUP;
+    
+    //comparaciones
+    if(PRODUCTOxLOWYxUP<=0)
+	{
+        printf("xLOW %f yxLOW %f xUP %f yxUP %f xROOTBEFORE %f xROOT %f \n", xLOW, yxLOW, xUP, yxUP, xROOTBEFORE, xROOT);
+     
+        while (errorrelativo>=0.1){// comparacion con la tolerancia, criterio de terminacion
+            //tabla de resultados
+            printf("%d° Iteracion: xLOW %f yxLOW %f xUP %f yxUP %f xROOTBEFORE %f xROOT %f \n", i ,xLOW, yxLOW, xUP, yxUP, xROOTBEFORE, xROOT);
+           
+            //se almacena el ultimo xROOT
+            if (i>0)//se ejecuta solo a partir de la primer iteracion
+			{
+                xROOTBEFORE=xROOT;
+            }
+            else{}
+            
+            xROOT = xUP - (yxUP*(xLOW - xUP))/(yxLOW - yxUP);//calculando la aprox de la raiz
+            yxROOT = 4*pow(xROOT,4) - 2*pow(xROOT,3) + pow(xROOT,2) - xROOT - 9;//imagen de la aproximacion
+            
+            PRODUCTOYxLOWYxROOT=yxLOW*yxROOT;
+            PRODUCTOYxROOTYxUP=yxUP*yxROOT;
+            
+            if(PRODUCTOYxLOWYxROOT<=0)//descriminacion del primer intervalo de la BISECCION
+			{ 
+                xUP=xROOT;
+            }
+            else 
+                if(PRODUCTOYxROOTYxUP <=0)//descriminacion del segundo intervalo de la BISECCION
+				{ 
+                    xLOW=xROOT;
+                }
+                else{
+                    printf("No es posible calcular la raiz en el intervalo senalado o no hay raiz.");
+                    goto final; //manda al final del programa y lo cierra
+                }
+            //refresacar valores de las imagenes
+            yxLOW = 4*pow(xLOW,4) - 2*pow(xLOW,3) + pow(xLOW,2) - xLOW - 9;
+            yxUP = 4*pow(xUP,4) - 2*pow(xUP,3) + pow(xUP,2) - xUP - 9;
+            
+            //calculo del error relativo hasta la segunda ejecucion
+            if(i>0)
+			{
+                errorrelativo=((abs(xROOT - xROOTBEFORE))/xROOT*100);
+            }
+            else{}
+            
+            i=i+1;
+        }//Final del while
+        printf("\n\nLa raiz es %f \n\n", xROOT);
+          printf("El error relativo es: %f\n", errorrelativo);
+    }
+    else{
+        printf("No es posible calcular la raiz en el intervalo señalado o no hay raiz");
+      
+    }
+    final:
+    return 0;
+}
