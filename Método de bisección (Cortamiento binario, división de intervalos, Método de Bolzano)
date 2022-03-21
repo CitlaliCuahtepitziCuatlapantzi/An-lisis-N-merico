@@ -1,0 +1,105 @@
+//CCC                      Analisis numerico                         16/03/22
+//Codigo para resolver ecuaciones polinomiales mediante el Metodo de Biseccion
+
+#include <stdio.h>
+#include <math.h>
+
+int main(){
+    
+    //Declaracion de variables
+    float xLOW,xUP,yxUP, yxLOW,PRODUCTOxLOWYxUP,xROOT,yxROOT, errorrelativo, xROOTBEFORE;
+    float PRODUCTOxLOWYxROOT,PRODUCTOYxROOTYxUP;
+    int i;//Contador de ejecuciones
+    i=0;//Contador de ejecuciones, valor default
+    errorrelativo = 100;//valor default del error relativo 
+    
+    //Bienvenida al    usuario
+    printf("\nCCC                              Analisis numerico                           16/03/22 \n");
+    printf("\n======================================================================================\n");
+    printf("\n   PROGRAMA PARA RESOLVER ECUACIONES POLINOMIALES MEDIANTE EL METODO DE BISECCION\n");
+    printf("\n====================================================================================\n\n");
+    printf("     Este programa calcula las raices de la funcion y = 4x^4 - 2x^3 + x^2 - x - 9\n");
+    printf("\n          Tolerancia (Error relativo porcentual): 0.1 por ciento\n");
+    printf("Indique los valores del intevalo donde se sospecha una raiz, en orden de MENOR a MAYOR\n\n");
+    
+    //Se recibe el dato inferior del intervalo,  xLOW
+    printf("\n xLOW =");
+    scanf("%f", &xLOW);
+    //Se recibe el dato superior del intervalo,  xUP
+    printf("\n xUP = ");
+    scanf("%f", &xUP);
+    printf("\n\n");// Da espacio en la pantalla
+
+    //Calculo de imagenes y productos
+    yxLOW = 4*pow(xLOW,4) - 2*pow(xLOW,3) + pow(xLOW,2) - xLOW - 9;
+    yxUP = 4*pow(xUP,4) - 2*pow(xUP,3) + pow(xUP,2) - xUP - 9;
+    PRODUCTOxLOWYxUP = yxLOW*yxUP;
+    
+    //Comparaciones
+    
+    if(PRODUCTOxLOWYxUP<=0)
+	{
+        printf("\nxLOW:%f yxLOW:%f xUP:%f yxUP:%f xROOTBEFORE:%f xROOT:%f \n",xLOW,yxLOW,xUP,yxUP,xROOTBEFORE,xROOT);        
+        
+        while(errorrelativo >= 0.1 )//Comparacion de tolerancia, criterio de terminacion
+		{
+            //Tabla de resultados
+            printf("\n Iteracion:%d   xLOW:%f   yxLOW:%f   xUP:%f   yxUP:%f   xROOTBEFORE:%f   xROOT:%f \n",i,xLOW,yxLOW,xUP,yxUP,xROOTBEFORE,xROOT);
+            
+            //Se almacena el ultimo xROOT
+            if(i>0)//Se ejecuta solo a partir de la primera iteracion
+			{
+                xROOTBEFORE=xROOT;
+            }
+            else{}
+            
+            xROOT = (xLOW + xUP)/2;// Calculo de la aproximacion de la raiz
+            yxROOT = 4*pow(xROOT,4) - 2*pow(xROOT,3) + pow(xROOT,2) - xROOT - 9;//Imagen de la aproximacion de raiz
+            
+            PRODUCTOxLOWYxROOT = yxLOW*yxROOT;
+            PRODUCTOYxROOTYxUP = yxUP*yxROOT;
+            
+            if(PRODUCTOxLOWYxROOT <= 0) //Descriminacion del primer intervalo de la biseccion 
+			{
+                xUP = xROOT;
+            }
+            else if(PRODUCTOYxROOTYxUP <= 0)//Descriminacion del segundo intervalo de la biseccion
+			{
+                xLOW = xROOT;
+            }
+            else
+			{
+                printf("\nNo es posible calcular la raiz en el intervalo señalado o no hay raiz.\n"); //Error
+                goto final;//Manda al final del programa y lo cierra
+            }
+            
+            //Refrescar valores de las imagenes
+              yxLOW = 4*pow(xLOW,4) - 2*(pow(xLOW,3)) + (pow(xLOW,2)) - xLOW - 9;
+              yxUP = 4*pow(xUP,4) -  2*(pow(xUP,3)) +  (pow(xUP,2)) - xUP - 9;
+              
+            //Calculo del error relativo hasta la segunda ejecucion
+            
+            if(i>0)
+			{
+                errorrelativo = ((abs(xROOT - xROOTBEFORE))/xROOT)*100;
+            }
+                else{}
+                
+                i=i+1;//Sumar una unidad al contador
+        }//Final del while 
+        
+		printf("\n la Raiz es: %f \n\n",xROOT);//Da a conocer el resultado final 
+		printf("El error relativo es: %f\n", errorrelativo);
+		
+    }//Final  del if(PRODUCTOYxROOTYxUP<=0)
+	    
+    else
+	{
+       printf("NO es posible calcular la raiz en el intervalo señalado o no hay raiz");//Error
+    }
+            
+        
+    //Fin del programa
+    final://Bandera, final del programa por un error intermedio
+    return 0;// Valor de retorno
+}
