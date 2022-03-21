@@ -1,0 +1,44 @@
+//CCC                     Analisis numerico                        16/03/2022
+//Codigo para resolver ecuaciones polinomiales mediante el metodo de Newton-Raphson
+
+#include <stdio.h>//biblioteca default
+#include <math.h>//biblioteca de funciones matematicas
+
+int main()
+{
+    //declaracion de variables
+    float xi,ximasuno,yximasuno,errorrelativo;
+    int i;//contador de ejecuciones
+    i=0;//Contador de ejecuciones, valor default
+    errorrelativo = 100;//valor default del error relativo
+    
+    //Bienvenida al usuario 
+    printf("\nANALISIS NUMERICO                                      CCC                                              21/02/2022\n");
+    printf("\n==================================================================================================================\n");
+    printf("           PROGRAMA PARA EL CALCULO DE RAICES DE POLINOMIOS MEDIANTE METODO DE NEWTON-RAPHSON");
+    printf("\n=======================================================================================0==========================\n");
+    printf("Este programa calcula las raices de la funcion: y = 4x^4 - 2x^3 + x^2 - x - 9  con una tolerancia de 0.1 por ciento \n");
+    printf("Indique el valor donde sospecha cercana la raiz\n\n");
+    
+    //Se recibe el dato inicial xi
+    printf("\n xi =  ");
+    scanf("%f",&xi);
+    printf("\n\n");
+    
+    while(errorrelativo >= 0.1){ //comparacion con el error errorrelativo, criterio de terminacion
+        //calculo nueva raiz e imagen
+        ximasuno = xi- ((4*pow(xi,4) - (2*pow(xi,3)) + pow(xi,2) - xi -9 )/(16*pow(xi,3)-6*pow(xi,2) + 2*xi -1));
+        yximasuno = 4*pow(ximasuno,4) - 2*pow(ximasuno,3) + pow(ximasuno,2) - ximasuno - 9;
+        
+        errorrelativo = ((abs(xi-ximasuno))/ximasuno)*100;
+        
+        i=i+1;//sumar una unidad al contador 
+        
+        //tabla de resultados
+        printf("iteracion: %d° xi: %f xi+1: %f f(xi+1): %f Error relativo: %f\n",i,xi,ximasuno,yximasuno,errorrelativo);
+        xi=ximasuno;
+    }
+    printf("\nLa raiz es: %f",ximasuno);
+    printf("\nEl error relativo es: %f\n", errorrelativo);
+    return 0;
+}
