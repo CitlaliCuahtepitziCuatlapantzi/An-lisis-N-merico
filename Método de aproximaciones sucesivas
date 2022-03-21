@@ -1,0 +1,44 @@
+//CCC                           Analisis numerico                   16/03/2022
+//Codigo para resolver ecuaciones polinomiales mediante el metodo de Aproximaciones Sucesivas
+
+#include <stdio.h>//biblioteca default
+#include <math.h>//biblioteca de funciones matematicas
+
+int main()
+{
+    //declaracion de variables
+    float xi,ximasuno,yximasuno,errorrelativo;
+    int i;//contador de ejecuciones
+    i=0;//contador de ejecuciones, valor default
+    errorrelativo=100;//valor default del error relativo
+    
+    //Bienvenida al usuario 
+    printf("\nANALISIS NUMERICO                          CCC                                21/02/2022\n");
+    printf("\n========================================================================================\n");
+    printf("PROGRAMA PARA EL CALCULO DE RAICES DE POLINOMIOS MEDIANTE METODO DE APROXIMACIONES SUCESIVAS");
+    printf("\n========================================================================================\n");
+    printf("Este programa calcula las raices de la funcion: y = 4x^4 - 2x^3 + x^2 - x - 9  con una tolerancia de 0.1 por ciento\n");
+    printf("Indique el valor que sospecha este cercano a la raiz\n\n");
+    
+    //Se recibe el dato
+    printf("\n xi =  ");
+    scanf("%f",&xi);
+    printf("\n\n");
+    
+    while(errorrelativo>= 0.1)//comparacion con la tolerancia, criterio de terminacion
+	{ 
+        //calculo nueva raiz e imagen
+        ximasuno = 4*pow(xi,4) - 2*pow(xi,3) + pow(xi,2)  - 9;
+        yximasuno = 4*(pow(ximasuno,4)) - 2*(pow(ximasuno,3)) + pow(ximasuno,2)-ximasuno - 9;
+        
+        errorrelativo = (abs((ximasuno-xi)/ximasuno))*100;
+        
+        i=i+1;//sumar una unidad al contador 
+        
+        //tabla de resultados
+        printf("iteracion: %d°    xi: %f    xi+1: %f   f(xi+1): %f   Error relativo: %f\n",i,xi,ximasuno,yximasuno,errorrelativo);
+        xi=ximasuno; //Sustitucion del valor viejo por el ultimo calculado
+    }//Final del while
+    printf("La raiz es: %f",ximasuno);
+    return 0;
+}
